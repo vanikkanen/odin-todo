@@ -9,6 +9,10 @@ export class ProjectList {
         return [...this.projects]
     }
 
+    getProject(index) {
+        return this.projects[index]
+    }
+
     // Return true if adding project was succesfull, else return false
     addProject(project) {
         if (!(project instanceof Project)) return false

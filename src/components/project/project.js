@@ -14,6 +14,10 @@ export class Project {
         this.title = newTitle
     }
 
+    getTodos() {
+        return [...this.todos]
+    }
+
     // Return true if adding todo was succesfull, else return false
     addTodo(todo) {
         if (!(todo instanceof Todo)) return false

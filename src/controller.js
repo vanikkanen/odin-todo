@@ -5,11 +5,11 @@ import { ProjectList } from "./components/projectList/projectList"
 const projectList = new ProjectList()
 
 document.addEventListener("click", (event) => {
-    console.log(event.target.classList)
     switch (true){
         
         case event.target.classList.contains("add-project"): {
             UI.showProjectInput()
+            break
         }
 
         case event.target.classList.contains("add-project-btn"):{
@@ -18,13 +18,20 @@ document.addEventListener("click", (event) => {
             const newProject = new Project(input.value)
             if (!projectList.addProject(newProject)) return
             UI.renderProjects(projectList.getProjects())
+            break
         }
             
         case (event.target.classList.contains("cancel-project-btn")): {
             UI.removeProjectInput()
             UI.renderProjects(projectList.getProjects())
+            break
         }
-    
+
+        case (event.target.classList.contains("sidebar-project")): {
+            const targetProject = projectList.getProjects()[event.target.dataset.index]
+            UI.renderTodos(targetProject.getTodos())
+            break
+        }
     }
 })
 
