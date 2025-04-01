@@ -6,13 +6,17 @@ export class Project {
         this.todos = todos
     }
 
+    getTitle() {
+        return this.title
+    }
+
     setTitle(newTitle) {
         this.title = newTitle
     }
 
     // Return true if adding todo was succesfull, else return false
     addTodo(todo) {
-        if (!todo instanceof Todo) return false
+        if (!(todo instanceof Todo)) return false
         this.todos.push(todo)
         return true
     }
