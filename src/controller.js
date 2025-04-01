@@ -13,19 +13,14 @@ document.addEventListener("click", (event) => {
         }
 
         case event.target.classList.contains("add-project-btn"):{
-            console.log("Add project")
             const input = document.querySelector(".project-input")
-            if (!input.value) {
-                console.log("No name")
-                return
-            }
+            if (!input.value) return
             const newProject = new Project(input.value)
-            projectList.addProject(newProject)
+            if (!projectList.addProject(newProject)) return
             UI.renderProjects(projectList.getProjects())
         }
             
         case (event.target.classList.contains("cancel-project-btn")): {
-            console.log("Cancel project")
             UI.removeProjectInput()
             UI.renderProjects(projectList.getProjects())
         }
