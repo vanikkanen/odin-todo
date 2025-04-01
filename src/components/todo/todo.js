@@ -7,6 +7,22 @@ export class Todo {
         this.complete = false
     }
 
+    setTitle(newTitle) {
+        this.title = newTitle
+    }
+
+    setDescription(newDescription) {
+        this.description = newDescription
+    }
+
+    setDueDate(newDate) {
+        this.dueDate = newDate
+    }
+
+    setPriority(newPriority) {
+        this.priority = newPriority
+    }
+
     toggleComplete() {
         this.complete = !this.complete
     }
