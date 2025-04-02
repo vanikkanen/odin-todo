@@ -58,6 +58,22 @@ document.addEventListener("click", (event) => {
             break
         }
 
+        case (event.target.classList.contains("toggle-todo-btn")): {
+            const todoIndex = event.target.parentElement.dataset.index
+            const targetProject = projectList.getSelectedProject()
+            const targetTodo = targetProject.getTodos()[todoIndex]
+            targetTodo.toggleComplete()
+            UI.renderTodos(targetProject.getTodos())
+            break
+        }
+
+        case (event.target.classList.contains("delete-todo-btn")): {
+            const todoIndex = event.target.dataset.index
+            const targetProject = projectList.getSelectedProject()
+            if(!targetProject.removeTodo(todoIndex)) return
+            UI.renderTodos(targetProject.getTodos())
+            break
+        }
 
     }
 })

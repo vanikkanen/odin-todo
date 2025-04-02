@@ -158,7 +158,7 @@ export class UI {
 
     static #createAddTodoElement() {
         const todoListElement = document.createElement("div")
-        todoListElement.classList.add("todo-item", "add-todo")
+        todoListElement.classList.add("add-todo")
         todoListElement.textContent = "Add new todo"
         return todoListElement
     }
