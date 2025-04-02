@@ -10,8 +10,13 @@ export class UI {
         addProject.remove()
     }
 
+    static #removeAddTodoElement() {
+        const addTodo = document.querySelector(".add-todo")
+        addTodo.remove()
+    }
+
     static showProjectInput() {
-        const sidebar = document.querySelector(".sidebar")
+        const sidebar = document.querySelector(".sidebar-projects")
         const projectInput = document.createElement("div")
         projectInput.classList.add("add-project-input")
         const input = document.createElement("input")
@@ -47,6 +52,64 @@ export class UI {
         const addProjectElement = UI.#createAddProjectElement()
         sidebarProjects.appendChild(addProjectElement)
     }
+
+    static showTodoInput() {
+        const todoList = document.querySelector(".todo-list")
+
+        const todoInput = document.createElement("div")
+
+        // Title
+        const titleInput = document.createElement("input")
+        titleInput.type = "text"
+        titleInput.placeholder = "Enter todo name..."
+        titleInput.classList.add("todo-title-input")
+        // Due date
+        const dateInput = document.createElement("input")
+        dateInput.type = "date"
+        dateInput.value = new Date()
+        dateInput.classList.add("todo-date-input")
+        // Description
+        const descriptionInput = document.createElement("input")
+        descriptionInput.type = "text"
+        descriptionInput.placeholder = "Enter todo description..."
+        descriptionInput.classList.add("todo-description-input")
+        // Priority
+        const priorityDiv = document.createElement("div")
+        const priorityInput = document.createElement("input")
+        priorityInput.type = "range"
+        priorityInput.min = 1
+        priorityInput.max = 3
+        priorityInput.id = "todo-priority"
+        priorityInput.classList.add("todo-priority-input")
+
+        const priorityLabel = document.createElement("label")
+        priorityLabel.for = "todo-priority"
+        priorityLabel.textContent = "Priority"
+
+        priorityDiv.appendChild(priorityLabel)
+        priorityDiv.appendChild(priorityInput)
+
+        // Buttons
+        const addBtn = document.createElement("button")
+        addBtn.textContent = "Add"
+        addBtn.classList.add("add-todo-btn")
+
+        const cancelBtn = document.createElement("button")
+        cancelBtn.textContent = "Cancel"
+        cancelBtn.classList.add("cancel-todo-btn")
+
+        // Add to the elements to the div
+        todoInput.appendChild(titleInput)
+        todoInput.appendChild(dateInput)
+        todoInput.appendChild(descriptionInput)
+        todoInput.appendChild(priorityDiv)
+        todoInput.appendChild(addBtn)
+        todoInput.appendChild(cancelBtn)
+
+        UI.#removeAddTodoElement()
+        todoList.appendChild(todoInput)
+    }
+
 
     static renderTodos(todos) {
         const todoList = document.querySelector(".todo-list")

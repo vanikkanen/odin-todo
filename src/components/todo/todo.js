@@ -11,6 +11,10 @@ export class Todo {
         this.title = newTitle
     }
 
+    getTitle() {
+        return this.title
+    }
+
     setDescription(newDescription) {
         this.description = newDescription
     }
