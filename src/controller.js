@@ -28,7 +28,8 @@ document.addEventListener("click", (event) => {
         }
 
         case (event.target.classList.contains("sidebar-project")): {
-            const targetProject = projectList.getProjects()[event.target.dataset.index]
+            projectList.setSelectProject(event.target.dataset.index)
+            const targetProject = projectList.getSelectedProject()
             UI.renderTodos(targetProject.getTodos())
             break
         }
