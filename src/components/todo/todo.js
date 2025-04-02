@@ -15,6 +15,10 @@ export class Todo {
         return this.title
     }
 
+    getPriority() {
+        return this.priority
+    }
+
     setDescription(newDescription) {
         this.description = newDescription
     }

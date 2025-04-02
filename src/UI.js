@@ -120,7 +120,8 @@ export class UI {
 
     static #createTodoElement(todo, index) {
         const todoElement = document.createElement("div")
-        todoElement.classList.add("todo-item")
+        const priorityClass = `priority-${todo.getPriority()}`
+        todoElement.classList.add("todo-item", priorityClass)
         todoElement.dataset.index = index
 
         const title = document.createElement("span")
