@@ -61,7 +61,6 @@ export class UI {
         // Due date
         const dateInput = document.createElement("input")
         dateInput.type = "date"
-        dateInput.value = new Date()
         dateInput.classList.add("todo-date-input")
         // Description
         const descriptionInput = document.createElement("input")
