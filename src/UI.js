@@ -104,8 +104,7 @@ export class UI {
         todoList.appendChild(todoInput)
     }
 
-
-    static renderTodos(todos) {
+    static renderTodos(todos, showAddElement=true) {
         const todoList = document.querySelector(".todo-list")
         todoList.innerHTML = ""
 
@@ -113,8 +112,10 @@ export class UI {
             const todoElement = UI.#createTodoElement(todo, index)
             todoList.appendChild(todoElement)
         })
-        const addTodoElement = UI.#createAddTodoElement()
-        todoList.appendChild(addTodoElement)
+        if (showAddElement) {
+            const addTodoElement = UI.#createAddTodoElement()
+            todoList.appendChild(addTodoElement)
+        }
     }
 
     static #createTodoElement(todo, index) {

@@ -5,6 +5,15 @@ import { Todo } from "./components/todo/todo"
 
 const projectList = new ProjectList()
 
+const getAllTodos = () => {
+    const projects = projectList.getProjects()
+    const todos = []
+    projects.forEach(project => {
+        todos.push(...project.getTodos())
+    })
+    return todos
+}
+
 document.addEventListener("click", (event) => {
     switch (true){
         
@@ -46,7 +55,7 @@ document.addEventListener("click", (event) => {
             const todoDescription = document.querySelector(".todo-description-input")
             const todoPriority = document.querySelector(".todo-priority-input")
             if (!todoTitle.value || !todoDate.value || !todoPriority.value) return
-            const newTodo = new Todo(todoTitle.value, todoDate.value, todoDescription.value, todoPriority.value)
+            const newTodo = new Todo(todoTitle.value, todoDescription.value, new Date(Date.parse(todoDate.value)), todoPriority.value)
             if (!targetProject.addTodo(newTodo)) return
             UI.renderTodos(targetProject.getTodos())
             break
@@ -75,8 +84,40 @@ document.addEventListener("click", (event) => {
             break
         }
 
+        case (event.target.classList.contains("all-tasks")): {
+            const allTodos = getAllTodos()
+            console.log(allTodos)
+            UI.renderTodos(allTodos, false)
+            break
+        }
+
+        case (event.target.classList.contains("today")): {
+            const allTodos = getAllTodos()
+            const today = new Date()
+            const filteredTodos = allTodos.filter(todo => {
+                return today.toDateString() === todo.getDueDate().toDateString()
+            })
+            UI.renderTodos(filteredTodos, false)
+            break
+        }
+
+        case (event.target.classList.contains("next-7-days")): {
+            const allTodos = getAllTodos()
+            const today = new Date()
+            today.setTime(0, 0, 0, 0)
+
+            const seventhDay = new Date()
+            seventhDay.setDate(today.getDate() + 7)
+            seventhDay.setHours(23, 59, 59, 999)
+
+            const filteredTodos = allTodos.filter(todo => {
+                const dueDate = todo.getDueDate()
+                return today.getTime() <= dueDate.getTime() &&
+                       dueDate.getTime() <= seventhDay.getTime()
+            })
+            UI.renderTodos(filteredTodos, false)
+            break
+        }
+
     }
 })
-
-
-
