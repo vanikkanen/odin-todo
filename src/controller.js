@@ -23,7 +23,6 @@ document.addEventListener("click", (event) => {
         }
             
         case (event.target.classList.contains("cancel-project-btn")): {
-            UI.removeProjectInput()
             UI.renderProjects(projectList.getProjects())
             break
         }

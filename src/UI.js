@@ -1,10 +1,5 @@
 export class UI {
 
-    static removeProjectInput() {
-        const projectInput = document.querySelector(".add-project-input")
-        projectInput.remove()
-    }
-
     static #removeAddProjectElement() {
         const addProject = document.querySelector(".add-project")
         addProject.remove()
