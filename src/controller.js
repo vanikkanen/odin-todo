@@ -54,8 +54,8 @@ document.addEventListener("click", (event) => {
         }
             
         case (event.target.classList.contains("cancel-todo-btn")): {
-            UI.removeProjectInput()
-            UI.renderProjects(projectList.getProjects())
+            const targetProject = projectList.getSelectedProject()
+            UI.renderTodos(targetProject.getTodos())
             break
         }
 
