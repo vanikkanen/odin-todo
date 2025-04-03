@@ -114,10 +114,15 @@ export class UI {
             todoElement.dataset.projectIndex = projectIndex
             todoList.appendChild(todoElement)
         })
-        if (addToProjectIndex) {
+        if (addToProjectIndex !== null) {
             const addTodoElement = UI.#createAddTodoElement(addToProjectIndex)
             todoList.appendChild(addTodoElement)
         }
+    }
+
+    static renderContentTitle(title) {
+        const contentTitle = document.querySelector(".content-title")
+        contentTitle.textContent = title
     }
 
     static #createTodoElement(todo) {

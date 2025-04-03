@@ -34,6 +34,9 @@ document.addEventListener("click", (event) => {
             if (!projectList.addProject(newProject)) return
             UI.renderProjects(projectList.getProjects())
             //TODO: Render the new project todos
+            let activeProject = projectList.getProjects().length - 1
+            UI.renderTodos([], activeProject)
+            UI.renderContentTitle(newProject.getTitle())
             break
         }
             
@@ -48,6 +51,7 @@ document.addEventListener("click", (event) => {
             activeTodos = [...targetProject.getTodos().map((todo, todoIndex) => ({todo, todoIndex, projectIndex}))]
             activeProject = projectIndex
             UI.renderTodos(activeTodos, activeProject)
+            UI.renderContentTitle(targetProject.getTitle())
             break
         }
         
@@ -114,6 +118,7 @@ document.addEventListener("click", (event) => {
             activeTodos = [...getAllTodos()]
             activeProject = null
             UI.renderTodos(activeTodos, activeProject)
+            UI.renderContentTitle("All tasks")
             break
         }
 
@@ -126,6 +131,7 @@ document.addEventListener("click", (event) => {
             activeTodos = [...filteredTodos]
             activeProject = null
             UI.renderTodos(activeTodos, activeProject)
+            UI.renderContentTitle("Today")
             break
         }
 
@@ -146,6 +152,7 @@ document.addEventListener("click", (event) => {
             activeTodos = [...filteredTodos]
             activeProject = null
             UI.renderTodos(activeTodos, activeProject)
+            UI.renderContentTitle("Next 7 days")
             break
         }
 
