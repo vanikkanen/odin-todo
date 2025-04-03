@@ -13,7 +13,7 @@ export class UI {
     static showProjectInput() {
         const sidebar = document.querySelector(".sidebar-projects")
         const projectInput = document.createElement("div")
-        projectInput.classList.add("add-project-input")
+        projectInput.classList.add("add-project-input", "sidebar-obj")
         const input = document.createElement("input")
         input.type = "text"
         input.placeholder = "Enter project name..."
@@ -53,6 +53,7 @@ export class UI {
 
         const todoInput = document.createElement("div")
         todoInput.dataset.projectIndex = projectIndex
+        todoInput.classList.add("todo-item")
 
         // Title
         const titleInput = document.createElement("input")
@@ -130,18 +131,21 @@ export class UI {
         const priorityClass = `priority-${todo.getPriority()}`
         todoElement.classList.add("todo-item", priorityClass)
 
-        const title = document.createElement("span")
-        title.textContent = todo.getTitle()
+        const infromation = document.createElement("span")
+        infromation.textContent =  `${todo.getTitle()} - ${todo.getDueDate().toLocaleDateString()}`
 
         const completeBtn = document.createElement("button")
         completeBtn.textContent = todo.complete ? "✔" : "○";
+        if (todo.complete) {
+            todoElement.classList.add("complete-todo")
+        }
         completeBtn.classList.add("toggle-todo-btn");
 
         const deleteBtn = document.createElement("button")
         deleteBtn.textContent = "X"
         deleteBtn.classList.add("delete-todo-btn")
 
-        todoElement.appendChild(title)
+        todoElement.appendChild(infromation)
         todoElement.appendChild(completeBtn)
         todoElement.appendChild(deleteBtn)
 
@@ -166,7 +170,7 @@ export class UI {
     static #createAddTodoElement(projectIndex) {
         const todoListElement = document.createElement("div")
         todoListElement.dataset.projectIndex = projectIndex
-        todoListElement.classList.add("add-todo")
+        todoListElement.classList.add("add-todo", "todo-item")
         todoListElement.textContent = "Add new todo"
         return todoListElement
     }
