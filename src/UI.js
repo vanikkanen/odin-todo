@@ -48,10 +48,11 @@ export class UI {
         sidebarProjects.appendChild(addProjectElement)
     }
 
-    static showTodoInput() {
+    static showTodoInput(projectIndex) {
         const todoList = document.querySelector(".todo-list")
 
         const todoInput = document.createElement("div")
+        todoInput.dataset.projectIndex = projectIndex
 
         // Title
         const titleInput = document.createElement("input")
@@ -104,25 +105,25 @@ export class UI {
         todoList.appendChild(todoInput)
     }
 
-    static renderTodos(todos, showAddElement=true) {
+    static renderTodos(todos, addToProjectIndex = null) {
         const todoList = document.querySelector(".todo-list")
         todoList.innerHTML = ""
-
-        todos.forEach((todo, index) => {
-            const todoElement = UI.#createTodoElement(todo, index)
+        todos.forEach(({todo, todoIndex, projectIndex}) => {
+            const todoElement = UI.#createTodoElement(todo)
+            todoElement.dataset.index = todoIndex
+            todoElement.dataset.projectIndex = projectIndex
             todoList.appendChild(todoElement)
         })
-        if (showAddElement) {
-            const addTodoElement = UI.#createAddTodoElement()
+        if (addToProjectIndex) {
+            const addTodoElement = UI.#createAddTodoElement(addToProjectIndex)
             todoList.appendChild(addTodoElement)
         }
     }
 
-    static #createTodoElement(todo, index) {
+    static #createTodoElement(todo) {
         const todoElement = document.createElement("div")
         const priorityClass = `priority-${todo.getPriority()}`
         todoElement.classList.add("todo-item", priorityClass)
-        todoElement.dataset.index = index
 
         const title = document.createElement("span")
         title.textContent = todo.getTitle()
@@ -157,8 +158,9 @@ export class UI {
         return sidebarObject
     }
 
-    static #createAddTodoElement() {
+    static #createAddTodoElement(projectIndex) {
         const todoListElement = document.createElement("div")
+        todoListElement.dataset.projectIndex = projectIndex
         todoListElement.classList.add("add-todo")
         todoListElement.textContent = "Add new todo"
         return todoListElement

@@ -8,11 +8,16 @@ const projectList = new ProjectList()
 const getAllTodos = () => {
     const projects = projectList.getProjects()
     const todos = []
-    projects.forEach(project => {
-        todos.push(...project.getTodos())
+    projects.forEach((project, projectIndex) => {
+        project.getTodos().forEach((todo, todoIndex) => {
+            todos.push({todo, todoIndex, projectIndex})
+        })
     })
     return todos
 }
+
+let activeTodos = []
+let activeProject = null
 
 document.addEventListener("click", (event) => {
     switch (true){
@@ -28,6 +33,7 @@ document.addEventListener("click", (event) => {
             const newProject = new Project(input.value)
             if (!projectList.addProject(newProject)) return
             UI.renderProjects(projectList.getProjects())
+            //TODO: Render the new project todos
             break
         }
             
@@ -37,67 +43,89 @@ document.addEventListener("click", (event) => {
         }
 
         case (event.target.classList.contains("sidebar-project")): {
-            projectList.setSelectProject(event.target.dataset.index)
-            const targetProject = projectList.getSelectedProject()
-            UI.renderTodos(targetProject.getTodos())
+            const projectIndex = event.target.dataset.index
+            const targetProject = projectList.getProjects()[projectIndex]
+            activeTodos = [...targetProject.getTodos().map((todo, todoIndex) => ({todo, todoIndex, projectIndex}))]
+            activeProject = projectIndex
+            UI.renderTodos(activeTodos, activeProject)
             break
         }
         
         case (event.target.classList.contains("add-todo")): {
-            UI.showTodoInput()
+            const projectIndex = event.target.dataset.projectIndex
+            UI.showTodoInput(projectIndex)
             break
         }
 
-        case event.target.classList.contains("add-todo-btn"):{
-            const targetProject = projectList.getSelectedProject()
+        case event.target.classList.contains("add-todo-btn"): {
+            const projectIndex = event.target.parentElement.dataset.projectIndex
+            const targetProject = projectList.getProjects()[projectIndex]
+
             const todoTitle = document.querySelector(".todo-title-input")
             const todoDate = document.querySelector(".todo-date-input")
             const todoDescription = document.querySelector(".todo-description-input")
             const todoPriority = document.querySelector(".todo-priority-input")
             if (!todoTitle.value || !todoDate.value || !todoPriority.value) return
-            const newTodo = new Todo(todoTitle.value, todoDescription.value, new Date(Date.parse(todoDate.value)), todoPriority.value)
+            const newTodo = new Todo(todoTitle.value, todoDescription.value, new Date(Date.parse(todoDate.value)), todoPriority.value, targetProject)
             if (!targetProject.addTodo(newTodo)) return
-            UI.renderTodos(targetProject.getTodos())
+            
+            // Update active todos to match the project todos
+            activeTodos = [...targetProject.getTodos().map((todo, todoIndex) => ({todo, todoIndex, projectIndex}))]
+            UI.renderTodos(activeTodos, activeProject)
             break
         }
             
         case (event.target.classList.contains("cancel-todo-btn")): {
-            const targetProject = projectList.getSelectedProject()
-            UI.renderTodos(targetProject.getTodos())
+            const projectIndex = event.target.parentElement.dataset.projectIndex
+            UI.renderTodos(activeTodos, activeProject)
             break
         }
 
         case (event.target.classList.contains("toggle-todo-btn")): {
             const todoIndex = event.target.parentElement.dataset.index
-            const targetProject = projectList.getSelectedProject()
+            const projectIndex = event.target.parentElement.dataset.projectIndex
+            const targetProject = projectList.getProjects()[projectIndex]
             const targetTodo = targetProject.getTodos()[todoIndex]
             targetTodo.toggleComplete()
-            UI.renderTodos(targetProject.getTodos())
+            UI.renderTodos(activeTodos, activeProject)
             break
         }
 
         case (event.target.classList.contains("delete-todo-btn")): {
-            const todoIndex = event.target.dataset.index
-            const targetProject = projectList.getSelectedProject()
+            const todoIndex = event.target.parentElement.dataset.index
+            const projectIndex = event.target.parentElement.dataset.projectIndex
+            const targetProject = projectList.getProjects()[projectIndex]
             if(!targetProject.removeTodo(todoIndex)) return
-            UI.renderTodos(targetProject.getTodos())
+
+            // Remove from activeTodos only if a project is selected
+            if (activeProject !== null) {
+                activeTodos = activeTodos.filter(({ todoIndex: index, projectIndex: pIndex }) => {
+                    return !(index == todoIndex && pIndex == projectIndex);
+                });
+            } else {
+                activeTodos = [...getAllTodos()]; // Refresh the todos if in filter mode
+            }
+
+            UI.renderTodos(activeTodos, activeProject)
             break
         }
 
         case (event.target.classList.contains("all-tasks")): {
-            const allTodos = getAllTodos()
-            console.log(allTodos)
-            UI.renderTodos(allTodos, false)
+            activeTodos = [...getAllTodos()]
+            activeProject = null
+            UI.renderTodos(activeTodos, activeProject)
             break
         }
 
         case (event.target.classList.contains("today")): {
             const allTodos = getAllTodos()
             const today = new Date()
-            const filteredTodos = allTodos.filter(todo => {
+            const filteredTodos = allTodos.filter(({ todo }) => {
                 return today.toDateString() === todo.getDueDate().toDateString()
             })
-            UI.renderTodos(filteredTodos, false)
+            activeTodos = [...filteredTodos]
+            activeProject = null
+            UI.renderTodos(activeTodos, activeProject)
             break
         }
 
@@ -110,12 +138,14 @@ document.addEventListener("click", (event) => {
             seventhDay.setDate(today.getDate() + 7)
             seventhDay.setHours(23, 59, 59, 999)
 
-            const filteredTodos = allTodos.filter(todo => {
+            const filteredTodos = allTodos.filter(({ todo }) => {
                 const dueDate = todo.getDueDate()
                 return today.getTime() <= dueDate.getTime() &&
                        dueDate.getTime() <= seventhDay.getTime()
             })
-            UI.renderTodos(filteredTodos, false)
+            activeTodos = [...filteredTodos]
+            activeProject = null
+            UI.renderTodos(activeTodos, activeProject)
             break
         }
 
