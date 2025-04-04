@@ -143,20 +143,54 @@ export class UI {
         const priorityClass = `priority-${todo.getPriority()}`
         todoElement.classList.add("todo-item", priorityClass)
 
-        const infromation = document.createElement("span")
-        infromation.textContent =  `${todo.getTitle()} - ${todo.getDueDate().toLocaleDateString()}`
+        const title = document.createElement("div")
+        title.textContent = `${todo.getTitle()}`
+
+        const dueDate = document.createElement("div")
+        dueDate.textContent = `${todo.getDueDate().toLocaleDateString()}`
 
         const completeBtn = document.createElement("button")
-        completeBtn.textContent = todo.complete ? "✔" : "○";
+        completeBtn.classList.add("toggle-todo-btn");
         if (todo.complete) {
             todoElement.classList.add("complete-todo")
+            completeBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 24 24"
+                    width="24" height="24" 
+                    fill="currentColor"
+                    aria-label="Mark not done">
+                    <title>radiobox-blank</title>
+                    <path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M12 20C7.59 20 4 16.41 4 12S7.59 4 12 4 20 7.59 20 12 16.41 20 12 20M16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z" />
+                </svg>
+            `
+        } else {
+            completeBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 24 24"
+                    width="24" height="24" 
+                    fill="currentColor"
+                    aria-label="Mark done">
+                    <title>check-bold</title>
+                    <path d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                </svg>
+            `;
         }
-        completeBtn.classList.add("toggle-todo-btn");
 
         const deleteBtn = document.createElement("button")
-        deleteBtn.textContent = "X"
         deleteBtn.classList.add("delete-todo-btn")
-
+        deleteBtn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                viewBox="0 0 24 24" 
+                width="24" height="24" 
+                fill="currentColor"
+                aria-label="Delete">
+            <title>Delete</title>
+            <path d="M9,3V4H4V6H5V19A2,2 0 0,0 
+                    7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,
+                    6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z" />
+            </svg>
+        `;
+        
         const todoContent = document.createElement("div")
         todoContent.classList.add("todo-content")
         if (todo.expanded) {
@@ -166,7 +200,8 @@ export class UI {
         description.textContent = `${todo.getDescription()}`
         todoContent.appendChild(description)
 
-        basicContent.appendChild(infromation)
+        basicContent.appendChild(title)
+        basicContent.appendChild(dueDate)
         basicContent.appendChild(completeBtn)
         basicContent.appendChild(deleteBtn)
         todoElement.append(basicContent)

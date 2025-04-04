@@ -83,9 +83,11 @@ document.addEventListener("click", (event) => {
             break
         }
 
-        case (event.target.classList.contains("toggle-todo-btn")): {
-            const todoIndex = event.target.parentElement.parentElement.dataset.index
-            const projectIndex = event.target.parentElement.parentElement.dataset.projectIndex
+        case (!!event.target.closest(".toggle-todo-btn")): {
+            const toggleBtn = event.target.closest(".toggle-todo-btn");
+            const todoElement = toggleBtn.closest(".todo-item");
+            const todoIndex = todoElement.dataset.index
+            const projectIndex = todoElement.dataset.projectIndex
             const targetProject = projectList.getProjects()[projectIndex]
             const targetTodo = targetProject.getTodos()[todoIndex]
             targetTodo.toggleComplete()
@@ -93,9 +95,11 @@ document.addEventListener("click", (event) => {
             break
         }
 
-        case (event.target.classList.contains("delete-todo-btn")): {
-            const todoIndex = event.target.parentElement.parentElement.dataset.index
-            const projectIndex = event.target.parentElement.parentElement.dataset.projectIndex
+        case (!!event.target.closest(".delete-todo-btn")): {
+            const deleteBtn = event.target.closest(".delete-todo-btn");
+            const todoElement = deleteBtn.closest(".todo-item");
+            const todoIndex = todoElement.dataset.index
+            const projectIndex = todoElement.dataset.projectIndex
             const targetProject = projectList.getProjects()[projectIndex]
             if(!targetProject.removeTodo(todoIndex)) return
 
