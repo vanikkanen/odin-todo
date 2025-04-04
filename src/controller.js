@@ -20,7 +20,7 @@ let activeTodos = []
 let activeProject = null
 
 document.addEventListener("click", (event) => {
-    switch (true){
+  switch (true){
         
         case event.target.classList.contains("add-project"): {
             UI.showProjectInput()
@@ -33,8 +33,7 @@ document.addEventListener("click", (event) => {
             const newProject = new Project(input.value)
             if (!projectList.addProject(newProject)) return
             UI.renderProjects(projectList.getProjects())
-            //TODO: Render the new project todos
-            let activeProject = projectList.getProjects().length - 1
+            activeProject = projectList.getProjects().length - 1
             UI.renderTodos([], activeProject)
             UI.renderContentTitle(newProject.getTitle())
             break
@@ -62,7 +61,7 @@ document.addEventListener("click", (event) => {
         }
 
         case event.target.classList.contains("add-todo-btn"): {
-            const projectIndex = event.target.parentElement.dataset.projectIndex
+            const projectIndex = event.target.parentElement.parentElement.dataset.projectIndex
             const targetProject = projectList.getProjects()[projectIndex]
 
             const todoTitle = document.querySelector(".todo-title-input")
@@ -80,14 +79,13 @@ document.addEventListener("click", (event) => {
         }
             
         case (event.target.classList.contains("cancel-todo-btn")): {
-            const projectIndex = event.target.parentElement.dataset.projectIndex
             UI.renderTodos(activeTodos, activeProject)
             break
         }
 
         case (event.target.classList.contains("toggle-todo-btn")): {
-            const todoIndex = event.target.parentElement.dataset.index
-            const projectIndex = event.target.parentElement.dataset.projectIndex
+            const todoIndex = event.target.parentElement.parentElement.dataset.index
+            const projectIndex = event.target.parentElement.parentElement.dataset.projectIndex
             const targetProject = projectList.getProjects()[projectIndex]
             const targetTodo = targetProject.getTodos()[todoIndex]
             targetTodo.toggleComplete()
@@ -96,8 +94,8 @@ document.addEventListener("click", (event) => {
         }
 
         case (event.target.classList.contains("delete-todo-btn")): {
-            const todoIndex = event.target.parentElement.dataset.index
-            const projectIndex = event.target.parentElement.dataset.projectIndex
+            const todoIndex = event.target.parentElement.parentElement.dataset.index
+            const projectIndex = event.target.parentElement.parentElement.dataset.projectIndex
             const targetProject = projectList.getProjects()[projectIndex]
             if(!targetProject.removeTodo(todoIndex)) return
 
@@ -110,6 +108,16 @@ document.addEventListener("click", (event) => {
                 activeTodos = [...getAllTodos()]; // Refresh the todos if in filter mode
             }
 
+            UI.renderTodos(activeTodos, activeProject)
+            break
+        }
+
+        case (event.target.classList.contains("todo-item") && !(event.target.classList.contains("todo-input"))): {
+            const todoIndex = event.target.dataset.index
+            const projectIndex = event.target.dataset.projectIndex
+            const targetProject = projectList.getProjects()[projectIndex]
+            const targetTodo = targetProject.getTodos()[todoIndex]
+            targetTodo.toggleExpand()
             UI.renderTodos(activeTodos, activeProject)
             break
         }

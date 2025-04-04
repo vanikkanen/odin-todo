@@ -5,6 +5,7 @@ export class Todo {
         this.dueDate = dueDate
         this.priority = priority
         this.complete = false
+        this.expanded = false
     }
 
     setTitle(newTitle) {
@@ -23,6 +24,10 @@ export class Todo {
         return this.dueDate
     }
 
+    getDescription() {
+        return this.description
+    }
+
     setDescription(newDescription) {
         this.description = newDescription
     }
@@ -37,5 +42,9 @@ export class Todo {
 
     toggleComplete() {
         this.complete = !this.complete
+    }
+
+    toggleExpand() {
+        this.expanded = !this.expanded
     }
 }

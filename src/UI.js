@@ -53,8 +53,10 @@ export class UI {
 
         const todoInput = document.createElement("div")
         todoInput.dataset.projectIndex = projectIndex
-        todoInput.classList.add("todo-item")
+        todoInput.classList.add("todo-item", "todo-input")
 
+        const inputContainer = document.createElement("div")
+        inputContainer.classList.add("todo-inputs-container")
         // Title
         const titleInput = document.createElement("input")
         titleInput.type = "text"
@@ -86,6 +88,9 @@ export class UI {
         priorityDiv.appendChild(priorityInput)
 
         // Buttons
+        const btnContainer = document.createElement("div")
+        btnContainer.classList.add("input-todo-buttons")
+
         const addBtn = document.createElement("button")
         addBtn.textContent = "Add"
         addBtn.classList.add("add-todo-btn")
@@ -94,13 +99,17 @@ export class UI {
         cancelBtn.textContent = "Cancel"
         cancelBtn.classList.add("cancel-todo-btn")
 
+        btnContainer.appendChild(addBtn)
+        btnContainer.appendChild(cancelBtn)
+
         // Add to the elements to the div
-        todoInput.appendChild(titleInput)
-        todoInput.appendChild(dateInput)
-        todoInput.appendChild(descriptionInput)
-        todoInput.appendChild(priorityDiv)
-        todoInput.appendChild(addBtn)
-        todoInput.appendChild(cancelBtn)
+        inputContainer.appendChild(titleInput)
+        inputContainer.appendChild(dateInput)
+        inputContainer.appendChild(descriptionInput)
+        inputContainer.appendChild(priorityDiv)
+
+        todoInput.appendChild(inputContainer)
+        todoInput.appendChild(btnContainer)
 
         UI.#removeAddTodoElement()
         todoList.appendChild(todoInput)
@@ -128,6 +137,9 @@ export class UI {
 
     static #createTodoElement(todo) {
         const todoElement = document.createElement("div")
+
+        const basicContent = document.createElement("div")
+        basicContent.classList.add("basic-todo-content")
         const priorityClass = `priority-${todo.getPriority()}`
         todoElement.classList.add("todo-item", priorityClass)
 
@@ -145,9 +157,20 @@ export class UI {
         deleteBtn.textContent = "X"
         deleteBtn.classList.add("delete-todo-btn")
 
-        todoElement.appendChild(infromation)
-        todoElement.appendChild(completeBtn)
-        todoElement.appendChild(deleteBtn)
+        const todoContent = document.createElement("div")
+        todoContent.classList.add("todo-content")
+        if (todo.expanded) {
+            todoContent.classList.add("show")
+        }
+        const description = document.createElement("p")
+        description.textContent = `${todo.getDescription()}`
+        todoContent.appendChild(description)
+
+        basicContent.appendChild(infromation)
+        basicContent.appendChild(completeBtn)
+        basicContent.appendChild(deleteBtn)
+        todoElement.append(basicContent)
+        todoElement.appendChild(todoContent)
 
         return todoElement
     }

@@ -61,10 +61,12 @@ html {
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;
+    border: 2px solid transparent;
 }
 
 .sidebar-obj:hover {
     background-color: #333;
+    border: 2px solid #005f99;
 }
 
 /* Main Content */
@@ -88,6 +90,7 @@ html {
 
 .todo-item {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     padding: 15px;
@@ -117,6 +120,7 @@ html {
     border: 2px solid #005f99;
 }
 
+.project-input,
 .todo-title-input,
 .todo-date-input,
 .todo-description-input {
@@ -161,6 +165,20 @@ button:hover {
 .cancel-todo-btn:hover {
     background-color: #a93226;
 }
+
+.todo-content {
+    max-height: 0;
+    padding: 0 18px;
+    font-size: 14px;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+}
+
+.todo-content.show {
+    max-height: 200px !important; /* Adjust this value based on expected description size */
+    padding: 10px 18px;
+}
+
 
 /* Footer */
 .footer {
