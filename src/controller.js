@@ -116,11 +116,13 @@ document.addEventListener("click", (event) => {
             break
         }
 
-        case (event.target.classList.contains("todo-item") && !(event.target.classList.contains("todo-input"))): {
-            const todoIndex = event.target.dataset.index
-            const projectIndex = event.target.dataset.projectIndex
+        case (!!(event.target.closest(".basic-todo-content") || event.target.classList.contains("todo-item")) && !event.target.classList.contains("todo-input")): {
+            const todoElement = event.target.closest(".todo-item")
+            const todoIndex = todoElement.dataset.index
+            const projectIndex = todoElement.dataset.projectIndex
             const targetProject = projectList.getProjects()[projectIndex]
             const targetTodo = targetProject.getTodos()[todoIndex]
+            if (targetTodo.getDescription() === "") return
             targetTodo.toggleExpand()
             UI.renderTodos(activeTodos, activeProject)
             break
