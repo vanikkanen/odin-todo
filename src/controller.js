@@ -54,6 +54,21 @@ document.addEventListener("click", (event) => {
             break
         }
         
+        case (!!event.target.closest(".delete-project-btn")): {
+            const deleteBtn = event.target.closest(".delete-project-btn");
+            const projectElement = deleteBtn.closest(".sidebar-project");
+            const projectIndex = projectElement.dataset.index
+            if(!projectList.removeProject(projectIndex)) return
+            if (activeProject === +projectIndex) {
+                activeProject = null
+                activeTodos = []
+                UI.renderContentTitle("")
+            }
+            UI.renderProjects(projectList.getProjects())
+            UI.renderTodos(activeTodos, activeProject)
+            break
+        }
+
         case (event.target.classList.contains("add-todo")): {
             const projectIndex = event.target.dataset.projectIndex
             UI.showTodoInput(projectIndex)

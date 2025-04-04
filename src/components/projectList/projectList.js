@@ -22,8 +22,7 @@ export class ProjectList {
     }
 
     // Return true if removing project was succesfull, else return false
-    removeProject() {
-        const index = this.projects.indexOf(this.selectedProject)
+    removeProject(index) {
         if (index < 0) return false
         this.projects.splice(index, 1)
         return true
