@@ -1,5 +1,7 @@
 import "./styles.css"
-import {Todo} from "./components/todo/todo"
-import { Project } from "./components/project/project"
-import { ProjectList } from "./components/projectList/projectList"
 import "./controller"
+import { Controller } from "./controller"
+
+document.addEventListener("DOMContentLoaded", () => {
+    Controller.init()
+})
