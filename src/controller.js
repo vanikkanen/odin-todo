@@ -3,7 +3,6 @@ import { Project } from "./components/project/project"
 import { ProjectList } from "./components/projectList/projectList"
 import { Todo } from "./components/todo/todo"
 
-
 export class Controller {
     static #projectList
     static #activeProject
@@ -23,9 +22,11 @@ export class Controller {
     }
 
     static #loadFromStorage() {
-
         const raw = JSON.parse(localStorage.getItem("projectList"))
-        if (raw === null) return new ProjectList()
+        if (raw === null) {
+            this.#projectList = new ProjectList()
+            return
+          } 
         const loadedProjects = raw.projects.map(project => {
             const title = project.title
             const todos = project.todos.map(todo => {
