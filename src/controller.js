@@ -26,9 +26,6 @@ export class Controller {
 
         const raw = JSON.parse(localStorage.getItem("projectList"))
         if (raw === null) return new ProjectList()
-        
-        console.log("LOAD", raw)
-
         const loadedProjects = raw.projects.map(project => {
             const title = project.title
             const todos = project.todos.map(todo => {
@@ -54,7 +51,6 @@ export class Controller {
     }
 
     static #saveToLocalStorage() {
-        console.log("SAVE", this.#projectList)
         localStorage.setItem("projectList", JSON.stringify(this.#projectList))
     }
 
