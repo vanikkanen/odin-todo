@@ -29,14 +29,12 @@ export class Controller {
         const loadedProjects = raw.projects.map(project => {
             const title = project.title
             const todos = project.todos.map(todo => {
-                const newTodo = new Todo(todo.title, todo.description, new Date(Date.parse(todo.dueDate)), todo.priority, todo.complete)
-                return newTodo
+                return new Todo(todo.title, todo.description, new Date(Date.parse(todo.dueDate)), todo.priority, todo.complete)
             })
             return new Project(title, todos)
         })
 
         this.#projectList = new ProjectList(loadedProjects)  
-        console.log(this.#projectList)  
     }
 
     static #getAllTodos() {
@@ -206,7 +204,7 @@ export class Controller {
                   case (event.target.classList.contains("next-7-days")): {
                       const allTodos = this.#getAllTodos()
                       const today = new Date()
-                      today.setTime(0, 0, 0, 0)
+                      today.setHours(0, 0, 0, 0)
           
                       const seventhDay = new Date()
                       seventhDay.setDate(today.getDate() + 7)

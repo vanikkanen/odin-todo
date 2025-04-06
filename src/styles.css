@@ -311,6 +311,10 @@ button:hover {
     align-items: center;
 }
 
+.basic-todo-content div {
+    width: 100px;
+}
+
 .todo-inputs-container {
     width: 100%;
     display: flex;
