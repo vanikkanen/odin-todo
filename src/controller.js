@@ -48,7 +48,7 @@ document.addEventListener("click", (event) => {
             const projectIndex = event.target.dataset.index
             const targetProject = projectList.getProjects()[projectIndex]
             activeTodos = [...targetProject.getTodos().map((todo, todoIndex) => ({todo, todoIndex, projectIndex}))]
-            activeProject = projectIndex
+            activeProject = +projectIndex
             UI.renderTodos(activeTodos, activeProject)
             UI.renderContentTitle(targetProject.getTitle())
             break
@@ -57,13 +57,15 @@ document.addEventListener("click", (event) => {
         case (!!event.target.closest(".delete-project-btn")): {
             const deleteBtn = event.target.closest(".delete-project-btn");
             const projectElement = deleteBtn.closest(".sidebar-project");
-            const projectIndex = projectElement.dataset.index
-            if(!projectList.removeProject(projectIndex)) return
-            if (activeProject === +projectIndex) {
+            const projectIndex = +projectElement.dataset.index
+            if (!projectList.removeProject(projectIndex)) return
+            
+            // If active project was deleted, reset everything
+            if (activeProject === projectIndex) {
                 activeProject = null
                 activeTodos = []
                 UI.renderContentTitle("")
-            }
+            } 
             UI.renderProjects(projectList.getProjects())
             UI.renderTodos(activeTodos, activeProject)
             break
