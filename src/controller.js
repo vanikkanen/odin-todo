@@ -174,7 +174,7 @@ export class Controller {
                       const todoElement = event.target.closest(".todo-item")
                       const todoIndex = todoElement.dataset.index
                       const projectIndex = todoElement.dataset.projectIndex
-                      const targetProject = projectList.getProjects()[projectIndex]
+                      const targetProject = this.#projectList.getProjects()[projectIndex]
                       const targetTodo = targetProject.getTodos()[todoIndex]
                       if (targetTodo.getDescription() === "") return
                       targetTodo.toggleExpand()
